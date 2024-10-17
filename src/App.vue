@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+const environment = import.meta.env.VITE_ENVIRONMENT || 'Unknown Environment'
 </script>
 
 <template>
@@ -14,7 +16,7 @@ import HelloWorld from './components/HelloWorld.vue'
     />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld :msg="`Hello ${environment}!`" />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
