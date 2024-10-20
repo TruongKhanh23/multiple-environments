@@ -3,8 +3,8 @@ name: Deploy to Vercel
 on:
   push:
     branches:
-      - main # Triển khai production khi push lên nhánh main
-      - '**' # Triển khai preview khi push lên bất kỳ nhánh nào khác
+      - main
+      - '**'
 
 jobs:
   deploy:
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Chọn phiên bản Node.js phù hợp với dự án của bạn
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
@@ -26,17 +26,15 @@ jobs:
         run: npm run build
 
       - name: Deploy to Vercel (Production)
-        if: github.ref == 'refs/heads/main' # Chỉ deploy production khi nhánh là 'main'
-        run: npx vercel --prod
+        if: github.ref == 'refs/heads/main'
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID }}
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy to Vercel (Preview)
-        if: github.ref != 'refs/heads/main' # Deploy preview cho các nhánh khác ngoài 'main'
-        run: npx vercel
+        if: github.ref != 'refs/heads/main'
+        run: npx vercel --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --project ${{ secrets.VERCEL_PROJECT_ID }}
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
