@@ -1,0 +1,42 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main # Triển khai production khi push lên nhánh main
+      - '**' # Triển khai preview khi push lên bất kỳ nhánh nào khác
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Chọn phiên bản Node.js phù hợp với dự án của bạn
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Vercel (Production)
+        if: github.ref == 'refs/heads/main' # Chỉ deploy production khi nhánh là 'main'
+        run: npx vercel --prod
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Vercel (Preview)
+        if: github.ref != 'refs/heads/main' # Deploy preview cho các nhánh khác ngoài 'main'
+        run: npx vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
