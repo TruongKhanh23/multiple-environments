@@ -16,7 +16,7 @@ const environment = import.meta.env.VITE_ENVIRONMENT || 'Unknown Environment'
     />
 
     <div class="wrapper">
-      <HelloWorld :msg="`Hello ${environment} - Trigger github workflow!`" />
+      <HelloWorld :msg="`Hello ${environment}`" />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
