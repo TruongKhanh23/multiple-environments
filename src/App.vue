@@ -1,8 +1,25 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import editMetaData from './composables/meta'
 
 const environment = import.meta.env.VITE_ENVIRONMENT || 'Unknown Environment'
+const productMetaData = {
+  url: 'https://multiple-environments-umber.vercel.app/',
+  title: 'Senku Multi-Environments',
+  description:
+    'Đơn giản, nhanh chóng, 100% trực tuyến và hoàn tất với chỉ vài cú nhấp chuột. Tham gia ngay!',
+  thumbnailPath: 'thumbnail_home.png',
+}
+editMetaData({
+  metaUrl: productMetaData?.url ?? '',
+  metaTitle: productMetaData?.title ?? '',
+  metaDescription: productMetaData?.description ?? '',
+  metaThumbnailPath: productMetaData?.thumbnailPath
+    ? window.location.origin + '/' + productMetaData?.thumbnailPath
+    : '',
+})
+//window.prerenderReady = true
 </script>
 
 <template>
