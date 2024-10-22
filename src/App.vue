@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { onMounted } from "vue"
+import { onMounted, nextTick } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import editMetaData from './composables/meta'
 
 const environment = import.meta.env.VITE_ENVIRONMENT || 'Unknown Environment'
 
-onMounted() => {
-  window.prerenderReady = false; // Đặt giá trị false khi trang chưa sẵn sàng
+onMounted(() => {
+  window.prerenderReady = false // Đặt giá trị false khi trang chưa sẵn sàng
 
   // Sau khi mọi thứ trong trang đã sẵn sàng
-  this.$nextTick(() => {
-    window.prerenderReady = true; // Đặt giá trị true để thông báo Prerender
-  });
-}
+  nextTick(() => {
+    window.prerenderReady = true // Đặt giá trị true để thông báo Prerender
+  })
+})
 
 const productMetaData = {
   url: 'https://multiple-environments-umber.vercel.app/',
